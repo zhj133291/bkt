@@ -10,7 +10,7 @@
     <div class="block">
       <div class='header'>
         <span class='first'>
-          银行管理
+          银行名称
         </span>
         <span class='th'>
           操作
@@ -77,6 +77,8 @@
         res.level = data.bankLevel;
         res.levelContent = this.level[data.bankLevel];
         res.operation = this.operation[data.bankLevel];
+        res.parentId = data.parentId;
+        res.parentName = data.parentName;
         res.children=[];
         if (data.branchList && data.branchList.length>0){
           data.branchList.map((item,k)=>{
@@ -115,18 +117,8 @@
 
       edit(node, data) {
         let params = {};
-        let parent = node.parent;
         params.bankId = data.id;
-        params.bankName = data.label;
-        params.bankLevel = data.level;
         params.bankLevelContent = data.levelContent;
-        if(!parent.parent){
-          params.parent = '无';
-          params.parentId = '';
-        }else{
-          params.parent = parent.data.label;
-          params.parentId = parent.data.id;
-        }
         this.$router.push({name:'branchDetail',query:params});
       }
     },
@@ -139,6 +131,9 @@
 <style lang='less'>
   @la:#777777;
   @gy: #363f45;
+  .el-tree-node__expand-icon.expanded{
+    transform:rotate(45deg) !important;
+  }
   .custom-tree-container{
     min-width:1048px;
     .dh{
@@ -195,11 +190,11 @@
           font-weight:600;
         }
         .first{
-          padding-left:30px;
+          padding-left:16px;
           text-align:left;
         }
         .sec{
-          width:400px;
+          width:300px;
           float:right;
         }
         .th{
@@ -225,11 +220,13 @@
             }
             .sec{
               float:right;
-              width:400px;
+              width:300px;
             }
             .th{
               width:400px;
               float:right;
+              box-sizing:border-box;
+              text-align:center;
               span{
                 margin-right:5px;
                 &:hover{
@@ -250,5 +247,9 @@
     justify-content: space-between;
     font-size: 14px;
     display:block;
+  }
+  .el-tree-node__expand-icon{
+    font-size:20px;
+    color:rgb(145, 149, 153);
   }
 </style>

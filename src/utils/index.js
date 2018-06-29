@@ -40,7 +40,7 @@ export default {
       return myReg.test(str);
     },
     password (str) {
-      let myReg=/^[\da-zA-z]{6,20}$/;
+      let myReg=/^(?![0-9]+$)(?![a-zA-Z]+$)[0-9A-Za-z]{6,20}$/;
       return myReg.test(str);
     }
   },
@@ -113,7 +113,7 @@ export default {
     return realLength;
   },
   goLogin (code) {
-    let str = '00000007_'+'00000008_'+'00000009_'+'00000010_'+'00000011_'+'00000012_'+'10000007_'+'10000011_'+'00000016_';
+    let str = '00000007_'+'00000008_'+'00000009_'+'00000010_'+'00000011_'+'00000012_'+'00000013_'+'00000014_'+'00000015_'+'00000016_'+'10000005_'+'10000011_';
     if(str.indexOf(code)!=-1){
       return true;
     }

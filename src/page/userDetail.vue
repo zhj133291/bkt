@@ -8,7 +8,7 @@
           <span>人员详情</span>
         </div>
         <div class='form'>
-            <div class="tree"  v-show='showTree'>
+            <div class="tree"  v-show='showTree' @mouseleave='closeTree'>
               <el-tree
                 :data="treeData"
                 node-key="id"
@@ -27,7 +27,7 @@
                     <span>员工姓名</span>
                 </div>
                 <div class='contentRight'>
-                    <input placeholder="不超过10个汉字" :disabled='user.operateType=="2"' type="text" @focus='removeNameTip' @keyup='nameReplace' v-model='user.userName' @blur='hideNameTip'>
+                    <input id='userName' placeholder="不超过10个汉字" :disabled='user.operateType=="2"' type="text" @focus='removeNameTip' @input='nameReplace($event)' @blur='hideNameTip' maxlength="10" @compositionstart="start" @compositionend="end">
                     <span v-if='tip.name'>{{tip.nameTip}}</span>
                     <span v-if='tip.nameErr' class='red'>{{tip.nameErrTip}}</span>
                 </div>
@@ -37,7 +37,7 @@
                     <span>手机号</span>
                 </div>
                 <div class='contentRight'>
-                    <input placeholder="请输入有效的手机号码" type="text" @focus='removePhoneTip' @keyup='phoneReplace' v-model='user.loginName' @blur='hidePhoneTip'>
+                    <input id='userPhone' placeholder="请输入有效的手机号码" type="text" @focus='removePhoneTip' @keyup='phoneReplace($event)' @input='phoneReplace($event)' @blur='hidePhoneTip' maxlength="11">
                     <span v-if='tip.phone'>{{tip.phoneTip}}</span>
                     <span v-if='tip.phoneErr' class='red'>{{tip.phoneErrTip}}</span>
                 </div>
@@ -46,9 +46,10 @@
                 <div class='label'>
                     <span>所属分支</span>
                 </div>
-                <div class='contentRight'>
+                <div class='contentRight downC'>
                   <input type="hidden" v-model='user.bankId'>
                   <input type="text" class='pointer' readonly="readonly" v-model='user.bankName' @click='showSelTree' placeholder="请选择所属分支">
+                  <i class="el-select__caret el-input__icon el-icon-arrow-down down" @click='showSelTree'></i>
                   <span  v-if='tip.bankErr' class='red'>{{tip.bankErrTip}}</span>
                 </div>
             </div>
@@ -76,7 +77,7 @@
                 </div>
             </div>
             <div class="button">
-              <button @click='submit' :disabled='reg' class='sure'>确 认</button>
+              <button @click='submit' :disabled='reg' class='sure'>保 存</button>
               <button @click='cancel' class='can'>取 消</button>
             </div>
         </div>
@@ -88,6 +89,7 @@
     data () {
       let INFO = JSON.parse(sessionStorage.getItem('INFO'));
       return {
+        pos:'b',
         reg:false,
         showTree:false,
         treeData:[],
@@ -130,6 +132,13 @@
       };
     },
     methods:{
+      start () {
+        this.pos = 'a';
+      },
+      end ($event) {
+        this.pos = 'b';
+        this.nameReplace($event);
+      },
       hideNameTip () {
         this.tip.name = false;
       },
@@ -167,23 +176,18 @@
         }
         return this.tip.bankErr;
       },
-      nameReplace () {
-        this.user.userName=this.user.userName.replace(/[^\u4E00-\u9FA5]/g,'');
-        let me=this;
-        let len = me.$utils.getLen(me.user.userName);
-        if(len<=20){
+      nameReplace ($event) {
+        if(this.pos === 'a'){
           return;
         }
-        let l=me.user.userName.length;
-        me.user.userName=me.user.userName.substring(0,l-1);
-        me.nameReplace();
+        let dom = $event.target;
+        this.replaceAndSetPos(dom,/[^\u4E00-\u9FA5]/g,'');
+        this.user.userName = dom.value;
       },
-      phoneReplace () {
-        this.user.loginName=this.user.loginName.replace(/[^\d]/g,'');
-        let len = this.user.loginName.length;
-        if(len>11){
-          this.user.loginName=this.user.loginName.substring(0,11);
-        }
+      phoneReplace ($event) {
+        let dom = $event.target;
+        this.replaceAndSetPos(dom,/[^\d]/g,'');
+        this.user.loginName = dom.value;
       },
       getBankTree () {
         let data= {
@@ -226,9 +230,9 @@
         });
       },
       showSelTree () {
-        if(this.info.bankLevel == '3'){
+        /*if(this.info.bankLevel == '3'){
           return;
-        }
+        }*/
         this.showTree = !this.showTree;
         this.tip.bankErr = false;
       },
@@ -236,6 +240,15 @@
         this.showTree = false;
       },
       selBank (data,node){
+        if(data.level == 1){
+          this.$message({
+            message: '不可添加总行人员',
+            type: 'error',
+            center: true,
+            duration: 2000
+          });
+          return;
+        }
         this.user.bankId = data.id;
         this.user.bankName = data.label;
         this.closeTree();
@@ -267,16 +280,28 @@
         this.reg = false;
         let me = this;
         let str = '';
-        str = this.user.operateType == '1'? '账号添加成功,默认密码为a123456,请登陆后及时修改':'保存成功';
-        this.$alert(str, {
-          confirmButtonText: '确定',
-          center:true,
-          callback: action => {
-            setTimeout(()=>{
-              me.$router.push("/user");
-            },500)
-          }
-        });
+        str = this.user.operateType == '1'? '账号添加成功,默认密码为a123456,请登录后及时修改':'保存成功';
+        if( this.user.operateType == '1'){
+           this.$alert(str, {
+            confirmButtonText: '确定',
+            center:true,
+            callback: action => {
+              setTimeout(()=>{
+                me.$router.push("/user");
+              },500)
+            }
+          });
+        }else{
+          this.$message({
+            message: str,
+            type: 'success',
+            center: true,
+            duration: 2000
+          });
+          setTimeout(()=>{
+            me.$router.push("/user");
+          },500)
+        }
       },
       saveErr (res) {
         if( this.$utils.goLogin(res.returnCode)){
@@ -285,15 +310,7 @@
         }
         this.reg = false;
         let str='';
-        if(res.returnCode=="30000001"){
-          str='新增异常';
-        }else if(res.returnCode=="30000002"){
-          str='修改异常';
-        }else if(res.returnCode=="10000012"){
-          str='请联系上级主管修改';
-        }else{
-          str=res.returnMessage;
-        }
+        str=res.returnMessage;
         this.$message({
           message: str,
           type: 'error',
@@ -302,7 +319,7 @@
         });
       },
       cancel () {
-        this.$router.push('/user');
+        this.$router.push({name:'user',params:{back:'back'}});
       }
     },
     created () {
@@ -320,6 +337,16 @@
         this.user.bankId=params.bankId;
         this.user.bankName=params.bankName;
         this.user.duty=parseInt(params.duty);
+        let me = this;
+        let timer = setInterval(()=>{
+          let userName = document.getElementById('userName');
+          let userPhone = document.getElementById('userPhone');
+          if(userName){
+            userName.value = me.user.userName;
+            userPhone.value = me.user.loginName;
+            clearInterval(timer);
+          }
+        },1);
         this.$nextTick(function(){
           me.$refs.tree.setCurrentKey(params.bankId);
         });
@@ -333,6 +360,19 @@
     @gy: #363f45;
     @height:400px;
     @width:400px;
+    .el-tree-node{
+      color:#363f45 !important;
+    }
+    .downC{
+      position:relative;
+      .down{
+        color:#c0c4cc;
+        position:absolute;
+        cursor:pointer;
+        top:-5px;
+        left:210px;
+      }
+    }
     .el-input__suffix{
       height:40px !important;
     }
@@ -453,7 +493,7 @@
               height:40px;
               line-height:40px;
               width:240px;
-              padding:12px 16px;
+              padding:0 16px;
               border: solid 1px rgba(234, 234, 234, 1);
               &:disabled{
                 background:#fff;

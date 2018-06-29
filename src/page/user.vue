@@ -9,57 +9,57 @@
           <span>人员列表</span>
         </div>
 
-        <!--查询-->
-        <div class="search">
-          <div class="name">
-            <label>姓名</label>
-            <input type="text" v-model="user.name" placeholder="请输入姓名">
-          </div>
-          <div class="branches">
-            <label>所属机构</label>
-            <div class="tree">
-              <div class="tree-tr">
-                <input type="hidden" v-model='user.bankId'>
-                <input type="text" class='pointer' readonly="readonly" v-model='user.bankName' @click='showSelTree' placeholder="请选择所属银行">
-                <el-tree v-show='showTree' class="el-tree" :data="treeData" node-key="id" default-expand-all ref='tree' :highlight-current='true' :expand-on-click-node="false" @current-change='selBank'>
-                  <span>请选择</span>
-                  <span class="custom-tree-node" slot-scope="{ node, data }">
-                  <span>{{ data.label }}</span>
-                </span>
-                </el-tree>
-              </div>
-            </div>
-          </div>
-          <div class="character">
-            <label>角色</label>
-            <el-select v-model="user.duty" placeholder="请选择">
-              <el-option v-for="item in duty" :key="item.value" :label="item.duty_label" :value="item.value"></el-option>
-            </el-select>
-          </div>
-          <el-button type="primary" @click="getUserList('search')" style="margin-left: 15px; background: #3185ff; border-color: #3185ff;">查询</el-button>
-          <el-button type="primary" @click="addUser()" style="background: #3185ff; border-color: #3185ff;">新增人员</el-button>
-        </div>
-
         <!--列表-->
         <div class="tab">
+          <div class="search">
+            <div class="name">
+              <label>姓&nbsp;名</label>
+              <input type="text" v-model="user.name" placeholder="请输入姓名">
+            </div>
+            <div class="branches" v-if="bankLevel != 3">
+              <label>所属分支</label>
+              <div class="tree">
+                <div class="tree-tr downC">
+                  <input type="hidden" v-model='user.bankId'>
+                  <input type="text" class='pointer' readonly="readonly" v-model='user.bankName' @click='showSelTree' placeholder="请选择所属银行">
+                  <i class="el-select__caret el-input__icon el-icon-arrow-down down" @click='showSelTree'></i>
+                  <el-tree v-show='showTree' class="el-tree" :data="treeData" node-key="id" default-expand-all ref='tree' :highlight-current='true' :expand-on-click-node="false" @current-change='selBank'>
+                    <span>请选择分支</span>
+                    <span class="custom-tree-node" slot-scope="{ node, data }">
+                  <span>{{ data.label }}</span>
+                </span>
+                  </el-tree>
+                </div>
+              </div>
+            </div>
+            <div class="character">
+              <label>职位</label>
+              <el-select v-model="user.duty" placeholder="请选择">
+                <el-option v-for="item in duty" :key="item.value" :label="item.duty_label" :value="item.value"></el-option>
+              </el-select>
+            </div>
+            <el-button type="primary" @click="getUserList('search')" style="margin-left: 50px; background: #3185ff; border-color: #3185ff;">筛选</el-button>
+            <el-button type="primary" @click="addUser()" style="background: #3185ff; border-color: #3185ff; margin-left: 10px;">新增人员</el-button>
+          </div>
+
           <el-table :data="tableData" node-key="id" style="width: 100%;">
-            <el-table-column prop="userName" label="姓名" width="180"></el-table-column>
-            <el-table-column prop="loginName" label="手机号" width="180"></el-table-column>
-            <el-table-column prop="bankName" label="所属分支" width="180"></el-table-column>
-            <el-table-column prop="dutyName" label="角色" width="180"></el-table-column>
-            <el-table-column prop="status" label="状态" width="180">
+            <el-table-column prop="userName" label="姓名"></el-table-column>
+            <el-table-column prop="loginName" label="手机号"></el-table-column>
+            <el-table-column prop="bankName" label="所属分支"></el-table-column>
+            <el-table-column prop="dutyName" label="职位"></el-table-column>
+            <el-table-column prop="status" label="状态">
               <template slot-scope="props">
-                <el-switch v-model="tableData[props.$index].status" @change='changeStatus($event, props.row)' :active-value="1" active-color="#3d78bd" :inactive-value="2" inactive-color="#d3d3d4"></el-switch>
+                <el-switch v-model="tableData[props.$index].status" @change='changeStatus($event, props.row)' :inactive-value="2" inactive-color="#d3d3d4" :active-value="1" active-color="#3d78bd"></el-switch>
               </template>
             </el-table-column>
-            <el-table-column prop="operate" label="操作" width="180">
+            <el-table-column prop="operate" label="操作">
               <template slot-scope="scope">
                 <el-button class="editBtn" type="text" @click="edit(scope.$index, scope.row)" size="small">编辑</el-button>
               </template>
             </el-table-column>
           </el-table>
           <div class="page">
-            <el-pagination background layout="total, prev, pager, next, jumper" :page-size="pageSize" :current-page="currentPage" @current-change="handleCurrentChange" @size-change="handleSizeChange" :total="total"></el-pagination>
+            <el-pagination background layout="prev, pager, next, total, jumper" :page-size="pageSize" :current-page.sync="currentPage" @current-change="handleCurrentChange" @size-change="handleSizeChange" :total="total"></el-pagination>
           </div>
         </div>
       </div>
@@ -69,13 +69,21 @@
 <script type="text/ecmascript-6">
     export default {
       data () {
+        let currentPage=1,total=0;
+        let params = this.$route.params;
+        if (params && params.back) {
+          currentPage=parseInt(sessionStorage.getItem("pageIndex"));
+          total=parseInt(sessionStorage.getItem("total"));
+        }
         let INFO = JSON.parse(sessionStorage.getItem('INFO'));
+        console.log(INFO);
         return {
+          bankLevel: INFO.bankLevel,
           reg:false,
           pageIndex: 1,
           pageSize: 30,
-          currentPage: 1,
-          total: 0,
+          currentPage: currentPage,
+          total: total,
           duty:[{
             value: '',
             duty_label: '请选择'
@@ -94,6 +102,12 @@
             bankName: '',
             duty: ''
           },
+          saveInfo:{
+            name:'',
+            bankId:'',
+            bankName:'',
+            duty:''
+          },
           showTree:false,
           tableData: [],
           treeData:[],
@@ -104,14 +118,20 @@
           }
         };
       },
+
       created () {
         this.getBankTree();
-        this.getUserList('init');
+        let params = this.$route.params;
+        if (params && params.back) {
+          this.getUserList('back');
+          return;
+        } else {
+          this.getUserList('init');
+        }
       },
       methods: {
         //列表
         getUserList(obj) {
-          console.log(obj)
           if (obj == 'init') {
             let data = {
               "service": "officerService",
@@ -126,10 +146,11 @@
             };
             this.$api.post('',data,this.getUserSuc,this.getUserErr,this.headers);
           } else if (obj == 'search') {
-            sessionStorage.setItem('name', this.user.name);
-            sessionStorage.setItem('bankId', this.user.bankId);
-            sessionStorage.setItem('bankName', this.user.bankName);
-            sessionStorage.setItem('duty', this.user.duty);
+            this.saveInfo.name = this.user.name;
+            this.saveInfo.bankId = this.user.bankId;
+            this.saveInfo.bankName = this.user.bankName;
+            this.saveInfo.duty = this.user.duty;
+            this.currentPage = this.pageIndex;
             let data = {
               "service": "officerService",
               "method": "getOfficerList",
@@ -142,28 +163,32 @@
               }
             };
             this.$api.post('',data,this.getUserSuc,this.getUserErr,this.headers);
+          } else if (obj == 'back') {
+            this.saveInfo.name = sessionStorage.getItem("name");
+            this.saveInfo.bankId = sessionStorage.getItem("bankId");
+            this.saveInfo.bankName = sessionStorage.getItem("bankName") !== '' ? sessionStorage.getItem("bankName") : '';
+            this.saveInfo.duty = sessionStorage.getItem("duty") !== '' ? sessionStorage.getItem("duty") : '';
+            this.user.name = this.saveInfo.name;
+            this.user.bankId = this.saveInfo.bankId;
+            this.user.bankName = this.saveInfo.bankName;
+            this.user.duty = this.saveInfo.duty;
+            this.handleCurrentChange(this.currentPage);
           }
-
         },
 
         //分页
         handleSizeChange: function (size) {
           this.pagesize = size;
-          console.log(this.pagesize);
         },
         handleCurrentChange: function(currentPage){
-          this.user.name = sessionStorage.getItem("name");
-          this.user.bankId = sessionStorage.getItem("bankId");
-          this.user.bankName = sessionStorage.getItem("bankName") == '' ? sessionStorage.getItem("bankName") : '请选择所属银行';
-          this.user.duty = sessionStorage.getItem("duty") == '' ? sessionStorage.getItem("duty") : '请选择';
           this.currentPage = currentPage;
           let current_data = {
             "service": "officerService",
             "method": "getOfficerList",
             "data": {
-              userName: this.user.name,
-              bankId: this.user.bankId,
-              duty: this.user.duty,
+              userName: this.saveInfo.name,
+              bankId: this.saveInfo.bankId,
+              duty: this.saveInfo.duty,
               pageIndex: this.currentPage,
               pageSize: this.pageSize
             }
@@ -172,7 +197,6 @@
         },
 
         getUserSuc(data) {
-          console.log(data);
           data.officerList.map((item,k)=>{
             item.dutyName = item.duty == 1 ? "主管" : "客户经理";
           });
@@ -187,11 +211,21 @@
             return;
           }
         },
+        save () {
+          sessionStorage.setItem('name', this.saveInfo.name);
+          sessionStorage.setItem('bankId', this.saveInfo.bankId);
+          sessionStorage.setItem('bankName', this.saveInfo.bankName);
+          sessionStorage.setItem('duty', this.saveInfo.duty);
+          sessionStorage.setItem('pageIndex', this.currentPage);
+          sessionStorage.setItem('total', this.total);
+        },
         addUser() {
           let params = {};
+          this.save();
           this.$router.push({name:'userDetail',query:params});
         },
         edit(index, row) {
+          this.save();
           let params = {
             "userId": row.userId,
             "userName": row.userName,
@@ -269,7 +303,7 @@
           this.$api.post('',chage_data,this.getStatusSuc,this.getStatusErr,this.headers);
         },
         getStatusSuc(data) {
-          this.getUserList();
+          this.getUserList('init');
         },
         getStatusErr(res) {
           console.log(res);
@@ -277,12 +311,41 @@
             this.goLogin();
             return;
           }
+          if (res.returnCode == '10000014') {
+            this.getUserList('init');
+          }
+          this.$message({
+            message: res.returnMessage,
+            type: 'error',
+            center: true,
+            duration: 2000
+          });
         },
+      },
+      mounted() {
+        // 点击其他不在的区域触发事件
+        let _this = this;
+        document.addEventListener('click', (e) => {
+          console.log(_this.$el.contains(e.target));
+          if (!_this.$el.contains(e.target)){
+              this.showTree = false;
+          }
+        })
       }
     };
 </script>
 
 <style lang="stylus" rel="stylesheet/stylus">
+  .downC{
+    position:relative;
+    .down{
+      color:#c0c4cc;
+      position:absolute;
+      cursor:pointer;
+      top:0;
+      left:206px;
+    }
+  }
   .custom-tree-node{
     width:100%;
     height:24px;
@@ -291,6 +354,14 @@
   .editBtn{
     font-size: 14px;
     color: #363f45;
+  }
+  .el-table th>.cell{
+    text-align: center;
+    color: #363f45;
+    font-size: 14px;
+  }
+  .el-table .cell{
+    text-align: center;
   }
   .editBtn:hover{
     font-size: 14px;
@@ -335,6 +406,8 @@
     }
     .search{
       padding: 15px 10px;
+      background: #fff;
+      border-bottom: 4px solid #ebecf2;
       min-width:1000px;
       .name{
         float: left;

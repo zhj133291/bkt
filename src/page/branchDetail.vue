@@ -29,7 +29,7 @@
                     <span>分支名称:</span>
                 </div>
                 <div class='contentRight'>
-                    <input placeholder="不超过50个字符" type="text" v-model='bankInfo.bankName' @keyup='nameReplace' @focus='showNameTip'>
+                    <input id='bankName' placeholder="不超过50个字符" type="text" @focus='showNameTip' @input='nameReplace($event)' maxlength="25" @compositionstart="start" @compositionend="end">
                     <span v-if='tip.name'>{{tip.nameTip}}</span>
                     <span v-if='tip.nameErr' class='red'>{{tip.nameErrTip}}</span>
                 </div>
@@ -39,7 +39,7 @@
                     <span>联系电话:</span>
                 </div>
                 <div class='contentRight'>
-                    <input placeholder="区号" type="text" v-model='bankInfo.areaCode' class="area" @keyup='areaReplace' @focus='showNumTip'>--<input placeholder="请输入8位电话号码" type="text" v-model='bankInfo.phoneNumber' class='phone' @keyup='phoneReplace' @focus='showNumTip'>
+                    <input id='areaCode' placeholder="区号" type="text" class="area" @keyup='areaReplace($event)' @focus='showNumTip' @input='areaReplace($event)' maxlength="4">--<input placeholder="请输入8位电话号码" type="text" class='phone' @keyup='phoneReplace($event)' @focus='showNumTip' @input='phoneReplace($event)' maxlength="8" id='eight'>
                     <span v-if='tip.areaErr' class='red'>{{tip.areaErrTip}}</span>
                     <span v-if='tip.phoneErr' class='red'>{{tip.phoneErrTip}}</span>
                 </div>
@@ -49,7 +49,7 @@
                     <span>联系地址:</span>
                 </div>
                 <div class='contentRight'>
-                    <textarea name="" id="" cols="30" rows="5" v-model='bankInfo.address' placeholder="不超过100个字符" @keyup='addReplace' @focus='showAddressTip'></textarea>
+                    <textarea name="" id="" cols="30" rows="5" v-model='bankInfo.address' placeholder="不超过100个字符" @input='addReplace($event)' @focus='showAddressTip'  maxlength="100"></textarea>
                     <span v-if='tip.addressErr' class='red text'>{{tip.addressErrTip}}</span>
                 </div>
             </div>
@@ -66,6 +66,7 @@
       data () {
         let INFO = JSON.parse(sessionStorage.getItem('INFO'));
         return {
+            pos:'b',
             reg:false,
             bankInfo:{
                 bankId:'',
@@ -88,7 +89,7 @@
               nameTip:'请填写分支名，无需全名，如紫金农商银行南京分行填写南京分行',
               nameErrTip:'请输入不超过50个字符分支名',
               name:false,
-              nameVili:false,
+              nameErr:false,
               areaTip:'区号不能为空',
               areaErrTip:'区号不能为空',
               area:false,
@@ -105,10 +106,33 @@
         };
       },
       methods:{
+        start () {
+          this.pos = 'a';
+        },
+        end ($event) {
+          this.pos = 'b';
+          this.nameReplace($event);
+        },
         getBankInfoSuc (data) {
+          this.bankInfo.bankName=data.bankName;
+          this.bankInfo.bankLevel=data.bankLevel;
+          this.bankInfo.parentId=data.parentId;
+          this.bankInfo.parent=data.parentName;
           this.bankInfo.areaCode=data.areaCode;
           this.bankInfo.phoneNumber=data.phoneNumber;
           this.bankInfo.address=data.address;
+          let me = this;
+          let timer = setInterval(()=>{
+            let bankName = document.getElementById('bankName');
+            let areaCode = document.getElementById('areaCode');
+            let eight = document.getElementById('eight');
+              if(bankName){
+                bankName.value = me.bankInfo.bankName;
+                areaCode.value = me.bankInfo.areaCode;
+                eight.value = me.bankInfo.phoneNumber;
+                clearInterval(timer);
+              }
+          },1);
         },
         getBankInfoErr (res) {
           if( this.$utils.goLogin(res.returnCode)){
@@ -116,32 +140,25 @@
             return;
           }
         },
-        areaReplace () {
-          this.bankInfo.areaCode=this.bankInfo.areaCode.replace(/[^\d]/g,'');
-          let len = this.bankInfo.areaCode.length;
-          if(len>4){
-            this.bankInfo.areaCode=this.bankInfo.areaCode.substring(0,4);
-          }
+        areaReplace ($event) {
+          let dom = $event.target;
+          this.replaceAndSetPos(dom,/[^\d]/g,'');
+          this.bankInfo.areaCode = dom.value;
         },
-        phoneReplace () {
-          this.bankInfo.phoneNumber=this.bankInfo.phoneNumber.replace(/[^\d]/g,'');
-          let len = this.bankInfo.phoneNumber.length;
-          if(len>8){
-            this.bankInfo.phoneNumber=this.bankInfo.phoneNumber.substring(0,8);
-          }
+        phoneReplace ($event) {
+          let dom = $event.target;
+          this.replaceAndSetPos(dom,/[^\d]/g,'');
+          this.bankInfo.phoneNumber = dom.value;
         },
-        nameReplace () {
-          this.bankInfo.bankName=this.bankInfo.bankName.replace(/[^\u4E00-\u9FA5]/g,'');
-          let me=this;
-          let len = me.$utils.getLen(me.bankInfo.bankName);
-          if(len<=50){
+        nameReplace ($event) {
+          if(this.pos === 'a'){
             return;
           }
-          let l=me.bankInfo.bankName.length;
-          me.bankInfo.bankName=me.bankInfo.bankName.substring(0,l-1);
-          me.nameReplace();
+          let dom = $event.target;
+          this.replaceAndSetPos(dom,/[^\u4E00-\u9FA5]/g,'');
+          this.bankInfo.bankName = dom.value;
         },
-        addReplace () {
+        addReplace ($event) {
           let me=this;
           let len = me.$utils.getLen(me.bankInfo.address);
           if(len<=100){
@@ -176,7 +193,7 @@
           return this.tip.phoneErr;
         },
         viliAdd () {
-          if(!this.bankInfo.address){
+          if(!this.bankInfo.address || /^\s+$/.test(this.bankInfo.address)){
             this.tip.addressErr=true;
           }
           return this.tip.addressErr;
@@ -239,15 +256,7 @@
           }
           this.reg=false;
           let str='';
-          if(res.returnCode=="30000001"){
-            str='新增异常';
-          }else if(res.returnCode=="30000002"){
-            str='修改异常';
-          }else if(res.returnCode=="30000003"){
-            str='银行名已存在';
-          }else{
-            str=res.returnMessage;
-          }
+          str=res.returnMessage;
           this.$message({
             message: str,
             type: 'error',
@@ -261,14 +270,10 @@
       },
       created () {
         let params = this.$route.query;
-        this.bankInfo.bankLevel=params.bankLevel;
         this.bankInfo.bankLevelContent=params.bankLevelContent;
-        this.bankInfo.parentId=params.parentId;
-        this.bankInfo.parent=params.parent;
         if(params.bankId){
           this.bankInfo.operateType = '2';
           this.bankInfo.bankId=params.bankId;
-          this.bankInfo.bankName=params.bankName;
           let data={
             "service": "organizeService",
             "method": "getBankInfo",
@@ -279,6 +284,9 @@
           this.$api.post('',data,this.getBankInfoSuc,this.getBankErr,this.headers)
         }else{
           this.bankInfo.operateType = '1';
+          this.bankInfo.parentId=params.parentId;
+          this.bankInfo.parent=params.parent;
+          this.bankInfo.bankLevel=params.bankLevel;
         }
       }
     };
@@ -371,7 +379,7 @@
               height:40px;
               line-height:40px;
               width:240px;
-              padding:12px 16px;
+              padding:0 16px;
               border: solid 1px rgba(234, 234, 234, 1);
             }
           }

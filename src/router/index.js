@@ -45,7 +45,7 @@ export default new Router({
           component: userDetail
         },
         {
-        	  name: 'creditReport',
+          name: 'creditReport',
           path: '/creditReport',
           component: creditReport
         },

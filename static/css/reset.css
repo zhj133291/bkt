@@ -173,3 +173,8 @@ body {
 ::-ms-clear { display: none; }
 
 ::-ms-reveal { display: none; }
+input:-webkit-autofill {
+  background-color: #FFF !important;
+  background-image: none;
+  color: #000;
+}

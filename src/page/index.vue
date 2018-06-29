@@ -26,7 +26,7 @@
           client: '1',
           token: INFO.token
         },
-        menuList: [{name:'分支管理',url:'branch'},{name:'人员管理',url:'user'}],
+        menuList: [{name:'客户受理',url:'accept'},{name:'分支管理',url:'branch'},{name:'人员管理',url:'user'}],
         userInfo: INFO,
         menu:[]
       };
@@ -103,7 +103,7 @@
   .content{
     margin-top:55px;
     margin-left:210px;
-    background-color: rgba(230, 231, 238, 1);
+    background-color: #ebecf2;
     min-height:1200px;
     overflow-x:auto;
   }
