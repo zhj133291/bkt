@@ -2,7 +2,10 @@
   <div class="report">
     <div class="report_title">
       <span class="first_span">南京辰阔科技有限公司</span>
-      <span class="second_span">爱信诺编码:</span><span class="third_span">348758934758934759</span>
+      <div class="report_time">
+      	<span class="second_span">报告生成时间：</span><span class="third_span">{{content.bgscsj}}</span>
+      	<span class="second_span">爱信诺编码:</span><span class="third_span">348758934758934759</span>
+      </div>
       <div class="report_span">爱信诺信用融资授信报告</div>
     </div>
     <div class="report_part1">
@@ -200,9 +203,9 @@
       </el-row>
 
       <p class="note">备注：</p>
-      <p class="note_content"><strong>成长指数</strong>&nbsp;&nbsp;通过预测未来企业一段时间的销售增长情况，评估企业未来一 段时间的经营状态，放映企业持续成长性，进而评估其偿债能力。（成长指数越高企业成长性越好，其偿债能力越强）交电话费开始就得混分巨兽开发商
+      <p class="note_content"><strong>成长指数</strong>&nbsp;&nbsp;通过预测未来企业一段时间的销售增长情况，评估企业未来一 段时间的经营状态，放映企业持续成长性，进而评估其偿债能力。（成长指数越高企业成长性越好，其偿债能力越强）
       </p>
-      <p class="note_content"><strong>履约指数</strong>&nbsp;&nbsp;通过分析企业历史履约情况，评估企业履约意愿强弱以及未来潜在信用 风险的可能性，从而反映企业未来偿债意愿。（履约指数越高企业偿债意愿也越高）哈宽度和U盾花和尚的精神科肤色的哈回答就是点击啊的杀机大环境开始的科技啊稍等哈
+      <p class="note_content"><strong>履约指数</strong>&nbsp;&nbsp;通过分析企业历史履约情况，评估企业履约意愿强弱以及未来潜在信用 风险的可能性，从而反映企业未来偿债意愿。（履约指数越高企业偿债意愿也越高）
       </p>
       <p class="note_content"><strong>信用评分</strong>&nbsp;&nbsp;信用评分是由成长指数与履约指数综合而成，用来评估企业未来信用状况， 其评分越高，信用越好；反之，则越差
       </p>
@@ -298,8 +301,13 @@
               rowspan: 2,
               colspan: 1
             };
-          } else {
+          } else if (rowIndex === 16 || rowIndex === 17) {
             return {
+              rowspan: 1,
+              colspan: 1
+            };
+          } else {
+          	return {
               rowspan: 0,
               colspan: 0
             };
@@ -388,6 +396,16 @@
           condition: '近12个月内企业重大税收违法情况',
           resultKey: "resultValue16",
           passKey: 'pass16'
+        }, {
+          target: '黑名单',
+          condition: '黑名单监测',
+          resultKey: "resultValue17",
+          passKey: 'pass17'
+        }, {
+          target: '灰名单',
+          condition: '灰名单监测',
+          resultKey: "resultValue18",
+          passKey: 'pass18'
         }];
         tableData.map((item, key) => {
           item.value1 = data.content.acesData[item.resultKey];
@@ -422,7 +440,7 @@
 		padding: 20px;
 		.report_title {
 			width: 100%;
-			height: 100px;
+			/*height: 100px;*/
 			.first_span {
 				display: inline-block;
 				width: 75%;
@@ -434,7 +452,7 @@
 			}
 			.second_span {
 				display: inline-block;
-				width: 100px;
+				width: 115px;
 				height: 40px;
 				text-align: center;
 				font-size: 16px;
@@ -444,7 +462,7 @@
 			}
 			.third_span {
 				display: inline-block;
-				width: 150px;
+				width: 120px;
 				height: 40px;
 				line-height: 40px;
 				font-size: 13px;
@@ -462,6 +480,7 @@
 		}
 
 		.report_part1 {
+			margin-top: 10px;
 			.company_apply {
 				width: 100%;
 				height: 20px;

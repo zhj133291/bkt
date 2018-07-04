@@ -8,6 +8,8 @@ import user from '@/page/user'
 import userDetail from '@/page/userDetail'
 import creditReport from '@/page/creditReport'
 import creditReviewReport from '@/page/creditReviewReport'
+import customerAccept from '@/page/customerAccept'
+import customerDetail from '@/page/customerDetail'
 
 Vue.use(Router)
 
@@ -53,6 +55,16 @@ export default new Router({
           name: 'creditReviewReport',
           path: '/creditReviewReport',
           component: creditReviewReport
+        },
+        {
+          name: 'customerAccept',
+          path: '/customerAccept',
+          component: customerAccept
+        },
+        {
+          name: 'customerDetail',
+          path: '/customerDetail',
+          component: customerDetail
         }
       ]
     }

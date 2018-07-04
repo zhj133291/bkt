@@ -117,5 +117,19 @@ export default {
     if(str.indexOf(code)!=-1){
       return true;
     }
-  }
+  },
+  //时间戳转化成时间格式
+  timeFormat (timestamp) {
+    function add0(m) {
+      return m < 10 ? '0' + m : m
+    }
+    var time = new Date(timestamp);
+    var year = time.getFullYear();
+    var month = time.getMonth() + 1;
+    var date = time.getDate();
+    var hours = time.getHours();
+    var minutes = time.getMinutes();
+    var seconds = time.getSeconds();
+    return year + '-' + add0(month) + '-' + add0(date) + ' ' + add0(hours) + ':' + add0(minutes) + ':' + add0(seconds);
+  },
 }

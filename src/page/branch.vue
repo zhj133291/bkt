@@ -131,6 +131,9 @@
 <style lang='less'>
   @la:#777777;
   @gy: #363f45;
+  .el-tree-node__content{
+    cursor:default !important;
+  }
   .el-tree-node__expand-icon.expanded{
     transform:rotate(45deg) !important;
   }

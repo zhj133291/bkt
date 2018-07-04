@@ -8,13 +8,12 @@
 				<div class="bkt_userlogin">登录</div>
 			</div>
 			<div class="bkt_phone">
-				<input type="text" placeholder="请输入手机号码" name="loginName" autocomplete="off" @focus="removeTip" @blur="checkName" @input="nameReplace($event)"  maxlength="11"/>
+				<input type="text" placeholder="请输入手机号码" name="loginName" autocomplete="off" @focus="removeTip" @blur="checkName" @keyup="nameReplace($event)"  maxlength="11"/>
 			</div>
 			<div class="bkt_pwd">
-				<input :type="type" placeholder="请输入密码" name="password" autocomplete="off" @focus="removeTip" @input="pwdReplace($event)" maxlength="20"/>
+				<input :type="type" placeholder="请输入密码" name="password" autocomplete="off" @focus="removeTip" @keyup="pwdReplace($event)" maxlength="20"/>
 				<i class='iconfont' @click='changeType' :class='{"icon-eye":type!=="text","icon-see":type=="text"}'></i>
 			</div>
-
 			<div class="bkt_errorMsg" v-if="form.tipShow">{{form.tip}}</div>
 			<div class="bkt_loginBtn">
         <button @click="loginClick" :disabled='reg'>登 录</button>

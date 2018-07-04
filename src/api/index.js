@@ -1,5 +1,8 @@
 // 配置API接口地址
-var root = 'http://192.168.100.27:8081/gateway/json'
+var root = '';
+var tag = location.hostname.indexOf('192.168')!==-1 || location.hostname.indexOf('localhost')!==-1;
+root = root + tag ? 'http://192.168.100.27:8081':location.host;
+root = root + '/gateway/json';
 // 引用axios
 var axios = require('axios')
 // 自定义判断元素类型JS

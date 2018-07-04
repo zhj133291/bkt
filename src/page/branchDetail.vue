@@ -29,7 +29,7 @@
                     <span>分支名称:</span>
                 </div>
                 <div class='contentRight'>
-                    <input id='bankName' placeholder="不超过50个字符" type="text" @focus='showNameTip' @input='nameReplace($event)' maxlength="25" @compositionstart="start" @compositionend="end">
+                    <input id='bankName' placeholder="不超过50个字符" type="text" @focus='showNameTip' @keyup='nameReplace($event)' maxlength="25" @compositionstart="start" @compositionend="end">
                     <span v-if='tip.name'>{{tip.nameTip}}</span>
                     <span v-if='tip.nameErr' class='red'>{{tip.nameErrTip}}</span>
                 </div>
@@ -39,7 +39,7 @@
                     <span>联系电话:</span>
                 </div>
                 <div class='contentRight'>
-                    <input id='areaCode' placeholder="区号" type="text" class="area" @keyup='areaReplace($event)' @focus='showNumTip' @input='areaReplace($event)' maxlength="4">--<input placeholder="请输入8位电话号码" type="text" class='phone' @keyup='phoneReplace($event)' @focus='showNumTip' @input='phoneReplace($event)' maxlength="8" id='eight'>
+                    <input id='areaCode' placeholder="区号" type="text" class="area" @focus='showNumTip' @keyup='areaReplace($event)' maxlength="4">--<input placeholder="请输入8位电话号码" type="text" class='phone' @keyup='phoneReplace($event)' @focus='showNumTip' maxlength="8" id='eight'>
                     <span v-if='tip.areaErr' class='red'>{{tip.areaErrTip}}</span>
                     <span v-if='tip.phoneErr' class='red'>{{tip.phoneErrTip}}</span>
                 </div>
@@ -49,7 +49,7 @@
                     <span>联系地址:</span>
                 </div>
                 <div class='contentRight'>
-                    <textarea name="" id="" cols="30" rows="5" v-model='bankInfo.address' placeholder="不超过100个字符" @input='addReplace($event)' @focus='showAddressTip'  maxlength="100"></textarea>
+                    <textarea name="" id="" cols="30" rows="5" v-model='bankInfo.address' placeholder="不超过100个字符" @keyup='addReplace($event)' @focus='showAddressTip'  maxlength="100"></textarea>
                     <span v-if='tip.addressErr' class='red text'>{{tip.addressErrTip}}</span>
                 </div>
             </div>

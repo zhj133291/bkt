@@ -27,7 +27,7 @@
                     <span>员工姓名</span>
                 </div>
                 <div class='contentRight'>
-                    <input id='userName' placeholder="不超过10个汉字" :disabled='user.operateType=="2"' type="text" @focus='removeNameTip' @input='nameReplace($event)' @blur='hideNameTip' maxlength="10" @compositionstart="start" @compositionend="end">
+                    <input id='userName' placeholder="不超过10个汉字" :disabled='user.operateType=="2"' type="text" @focus='removeNameTip' @keyup='nameReplace($event)' @blur='hideNameTip' maxlength="10" @compositionstart="start" @compositionend="end">
                     <span v-if='tip.name'>{{tip.nameTip}}</span>
                     <span v-if='tip.nameErr' class='red'>{{tip.nameErrTip}}</span>
                 </div>
@@ -37,7 +37,7 @@
                     <span>手机号</span>
                 </div>
                 <div class='contentRight'>
-                    <input id='userPhone' placeholder="请输入有效的手机号码" type="text" @focus='removePhoneTip' @keyup='phoneReplace($event)' @input='phoneReplace($event)' @blur='hidePhoneTip' maxlength="11">
+                    <input id='userPhone' placeholder="请输入有效的手机号码" type="text" @focus='removePhoneTip' @keyup='phoneReplace($event)' @blur='hidePhoneTip' maxlength="11">
                     <span v-if='tip.phone'>{{tip.phoneTip}}</span>
                     <span v-if='tip.phoneErr' class='red'>{{tip.phoneErrTip}}</span>
                 </div>
