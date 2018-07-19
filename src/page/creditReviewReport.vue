@@ -1,8 +1,12 @@
 <template>
   <div class="creditReview">
+    <div class="version">{{content.GLOBAL.REPORTNAME}}{{content.GLOBAL.VERSION}}</div>
     <div class="company">
       <div class="co">{{content.GLOBAL.ENTNAME}}</div>
-      <div class="time">报告所属期：<span class="red">{{content.GLOBAL.BGSJ}}</span></div>
+      <div>
+        <div class="time">报告所属期：<span class="red">{{content.GLOBAL.BGSJ}}</span></div>
+        <div class="number">爱信诺编码：<span class="red">{{content.GLOBAL.IXINNUOBM}}</span></div>
+      </div>
     </div>
     <!--企业信息-->
     <div class="enterprise">
@@ -70,7 +74,7 @@
             <label>营业期限起：</label><span>{{content.JBXX.OPFROM}}</span>
           </p>
           <p>
-            <label>营业期限至：</label><span>{{content.JBXX.OPTO}}</span>
+            <label>营业期限止：</label><span>{{content.JBXX.OPTO}}</span>
           </p>
         </div>
         <div class="info">
@@ -96,7 +100,7 @@
             <el-table-column prop="BLICTYPE" label="证照/证件类型"></el-table-column>
             <el-table-column prop="BLICNO" label="证照/证件号码"></el-table-column>
             <el-table-column prop="CGBL" label="持股比例"></el-table-column>
-            <el-table-column prop="LISUBCONAM" label="累计认缴额"></el-table-column>
+            <el-table-column prop="LISUBCONAM" label="累计认缴额（万）"></el-table-column>
           </el-table>
         </div>
       </div>
@@ -120,7 +124,7 @@
             <el-table-column prop="yhmc" label="开户银行"></el-table-column>
             <el-table-column prop="yhzh" label="银行账号"></el-table-column>
             <el-table-column prop="xxje" label="总金额"></el-table-column>
-            <el-table-column prop="count" label="总分数"></el-table-column>
+            <el-table-column prop="count" label="总份数"></el-table-column>
             <el-table-column prop="je_rate" label="金额占比"></el-table-column>
           </el-table>
         </div>
@@ -194,7 +198,7 @@
         </el-table>
       </div>
       <div class="subtitle">3.2主营收入分析</div>
-      <div class="title">3.2.1主营商品分子</div>
+      <div class="title">3.2.1主营商品分析</div>
       <div class="tipInfo">
         采集时间区间：<span>{{content.ZYSPFX.cjqj}}</span><br> 发票份数（含商品明细）：
         <span>{{content.ZYSPFX.fpxxVo.fp_qdxx_count}}</span>份， 总金额：<span>{{content.ZYSPFX.fpxxVo.fp_qdxx_sum}}</span>元，占全部金额比例：<span>{{content.ZYSPFX.fpxxVo.fp_qdxx_sum_rate}}</span>。<br> 发票份数（无商品明细）：
@@ -251,6 +255,7 @@
           <el-table-column prop="d3" label="税率3%"></el-table-column>
           <el-table-column prop="d5" label="税率5%"></el-table-column>
           <el-table-column prop="d6" label="税率6%"></el-table-column>
+          <el-table-column prop="d10" label="税率10%"></el-table-column>
           <el-table-column prop="d11" label="税率11%"></el-table-column>
           <el-table-column prop="d13" label="税率13%"></el-table-column>
           <el-table-column prop="d17" label="税率17%"></el-table-column>
@@ -265,7 +270,7 @@
         <span>{{content.CGSPFX.fpxxVo.fp_count}}</span>份， 总金额：<span>{{content.CGSPFX.fpxxVo.fp_sum}}</span>元，占全部金额比例：<span>{{content.CGSPFX.fpxxVo.fp_sum_rate}}</span>。
       </div>
       <div class="tipInfo">
-        该公司累计销售商品数为：<span>{{content.CGSPFX.jx_sl}}</span>， 主营商品基尼系数为：<span>{{content.CGSPFX.cgsp_jnxs}}</span>，集中度：<span>{{content.CGSPFX.jzd}}</span>。
+        该公司累计进项商品数为：<span>{{content.CGSPFX.jx_sl}}</span>， 采购商品基尼系数为：<span>{{content.CGSPFX.cgsp_jnxs}}</span>，集中度：<span>{{content.CGSPFX.jzd}}</span>。
       </div>
       <div class="CGSPFX">
         <el-table :data="content.CGSPFX.jx_spqd" style="width: 100%">
@@ -402,7 +407,7 @@
       </div>
       <div class="subtitle">3.5下游企业汇总分析</div>
       <div class="tipInfo">
-        该公司累计下游企业数量为：<span>{{content.QSDXYQY.xyqytj.qysl}}</span>家，总交易金额约为：<span>{{content.QSDXYQY.xyqytj.sumJe}}</span>元，平均交易金额约为：<span>{{content.QSDXYQY.xyqytj.averageJe}}</span>元；上游交易稳定指数：<span>{{content.QSDXYQY.xyqytj.xywdzs}}</span>，稳定度<span>{{content.QSDXYQY.xyqytj.xywdzsName}}</span>。
+        该公司累计下游企业数量为：<span>{{content.QSDXYQY.xyqytj.qysl}}</span>家，总交易金额约为：<span>{{content.QSDXYQY.xyqytj.sumJe}}</span>元，平均交易金额约为：<span>{{content.QSDXYQY.xyqytj.averageJe}}</span>元；下游交易稳定指数：<span>{{content.QSDXYQY.xyqytj.xywdzs}}</span>，稳定度<span>{{content.QSDXYQY.xyqytj.xywdzsName}}</span>。
       </div>
       <div class="tipInfo">
         企业下游基尼系数为：<span>{{content.QSDXYQY.xyqytj.xyjnxs}}</span>，集中度<span>{{content.QSDXYQY.xyqytj.xyjzd}}</span>。
@@ -544,7 +549,7 @@
         <div class="tipInfo">
           提示：若以下分类数据为零，不排除存在时间相对滞后或第三方未公示的情况，仅供客户参考。
         </div>
-        <div class="title">5.2.1执行公告</div>
+        <div class="title">5.2.1执行公告({{content.ALL.zxggCount}})</div>
         <div class="ZXGG">
           <el-table :data="content.ZXGG" style="width: 100%">
             <el-table-column prop="title" label="标题"></el-table-column>
@@ -555,7 +560,7 @@
             <el-table-column prop="caseState" label="案件状态"></el-table-column>
           </el-table>
         </div>
-        <div class="title">5.2.2失信公告</div>
+        <div class="title">5.2.2失信公告({{content.ALL.sxggCount}})</div>
         <div class="SXGG">
           <el-table :data="content.SXGG" style="width: 100%">
             <el-table-column prop="court" label="执行法院名称"></el-table-column>
@@ -1108,6 +1113,12 @@
   .creditReview{
     font-size: 14px;
     margin: 20px;
+    .version{
+      font-size 12px;
+      color: #333;
+      padding-bottom: 10px;
+      border-bottom: 1px solid #333;
+    }
     .company{
       .co{
         font-size: 24px;
@@ -1115,6 +1126,17 @@
         padding: 15px 10px;
       }
       .time{
+        display: inline-block;
+        font-size 16px;
+        color: rgb(91, 110, 130);
+        padding: 10px;
+        .red{
+          color: #FF0001;
+        }
+      }
+      .number{
+        float right;
+        display: inline-block;
         font-size 16px;
         color: rgb(91, 110, 130);
         padding: 10px;

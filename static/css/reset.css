@@ -178,3 +178,9 @@ input:-webkit-autofill {
   background-image: none;
   color: #000;
 }
+.el-tabs__item{font-size:15px !important;}
+.el-input__inner{border-radius:0 !important;}
+.el-button{border-radius:0 !important;}
+.el-tree--highlight-current .el-tree-node.is-current>.el-tree-node__content{background-color:#f5f7fa !important;}
+.custom-tree-node>span{padding-right:10px;}
+.el-select-dropdown__wrap{max-height:190px !important;}

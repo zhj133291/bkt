@@ -1,5 +1,5 @@
 <template>
-	<div class="bkt_loginContainer">
+	<div class="bkt_loginContainer" @keyup.enter='loginClick'>
 		<div class="bkt_logoImg"><img src="./bkt_logo.png"/></div>
 		<div class="bkt_title">诚税融银行管理系统</div>
 		<div class="bkt_content">
@@ -8,10 +8,10 @@
 				<div class="bkt_userlogin">登录</div>
 			</div>
 			<div class="bkt_phone">
-				<input type="text" placeholder="请输入手机号码" name="loginName" autocomplete="off" @focus="removeTip" @blur="checkName" @keyup="nameReplace($event)"  maxlength="11"/>
+				<input type="text" placeholder="请输入手机号码" name="loginName" autocomplete="off" @focus="removeTip" @blur="checkName" @keyup="nameReplace($event)"  maxlength="11" v-model='form.loginName'/>
 			</div>
 			<div class="bkt_pwd">
-				<input :type="type" placeholder="请输入密码" name="password" autocomplete="off" @focus="removeTip" @keyup="pwdReplace($event)" maxlength="20"/>
+				<input :type="type" placeholder="请输入密码" name="password" autocomplete="off" @focus="removeTip" @keyup="pwdReplace($event)" maxlength="20" v-model='form.passWord'/>
 				<i class='iconfont' @click='changeType' :class='{"icon-eye":type!=="text","icon-see":type=="text"}'></i>
 			</div>
 			<div class="bkt_errorMsg" v-if="form.tipShow">{{form.tip}}</div>
@@ -118,8 +118,10 @@ export default {
 				"service": "officerService",
 				"method": "login",
 				"data": {
+					"client":"B",
 					"loginName": this.form.loginName,
-					"password": this.form.passWord
+					"password": this.form.passWord,
+					"client":"B"
 				}
 			};
 			this.$api.post('',data,this.loginSuc,this.loginErr,this.headers);

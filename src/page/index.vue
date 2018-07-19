@@ -26,7 +26,7 @@
           client: '1',
           token: INFO.token
         },
-        menuList: [{name:'客户受理',url:'accept'},{name:'分支管理',url:'branch'},{name:'人员管理',url:'user'}],
+        menuList: [{name:'客户受理',url:'customerAccept'},{name:'分支管理',url:'branch'},{name:'人员管理',url:'user'}],
         userInfo: INFO,
         menu:[]
       };

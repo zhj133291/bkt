@@ -156,7 +156,7 @@
     }
     .title{
       height:55px;
-      line-heihgt:55px;
+      line-height:55px;
       padding-left:24px;
       div{
         margin-top:20px;
@@ -167,7 +167,6 @@
       }
       span{
         display:inline-block;
-        margin-top:20px;
         margin-left:7px;
         font-size:13px;
         color: @gy;
@@ -175,7 +174,7 @@
     }
     .block{
       margin-left:24px;
-      min-width:1000px;
+      min-width:1091px;
       width:calc(100% - 48px);
       background-color: #fff;
       box-shadow: inset 0px -1px 0px 0px rgba(230, 231, 237, 1);
@@ -201,7 +200,7 @@
           float:right;
         }
         .th{
-          width:400px;
+          width:350px;
           float:right;
         }
       }
@@ -226,11 +225,12 @@
               width:300px;
             }
             .th{
-              width:400px;
+              width:350px;
               float:right;
               box-sizing:border-box;
               text-align:center;
               span{
+                cursor:pointer;
                 margin-right:5px;
                 &:hover{
                   color: #3185ff;

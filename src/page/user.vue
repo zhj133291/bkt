@@ -23,12 +23,14 @@
                   <input type="hidden" v-model='user.bankId'>
                   <input type="text" class='pointer' readonly="readonly" v-model='user.bankName' @click='showSelTree' placeholder="请选择所属银行">
                   <i class="el-select__caret el-input__icon el-icon-arrow-down down" @click='showSelTree'></i>
-                  <el-tree v-show='showTree' class="el-tree" :data="treeData" node-key="id" default-expand-all ref='tree' :highlight-current='true' :expand-on-click-node="false" @current-change='selBank'>
-                    <span>请选择分支</span>
-                    <span class="custom-tree-node" slot-scope="{ node, data }">
-                  <span>{{ data.label }}</span>
-                </span>
-                  </el-tree>
+                  <div  v-show='showTree' @mouseleave='closeTree'>
+                    <el-tree v-show='showTree' class="el-tree" :data="treeData" node-key="id" default-expand-all ref='tree' :highlight-current='true' :expand-on-click-node="false" @current-change='selBank'>
+                      <span>请选择分支</span>
+                      <span class="custom-tree-node" slot-scope="{ node, data }">
+                        <span>{{ data.label }}</span>
+                      </span>
+                    </el-tree>
+                  </div>
                 </div>
               </div>
             </div>
@@ -141,7 +143,8 @@
                 bankId: this.user.bankId,
                 duty: this.user.duty,
                 pageIndex: this.pageIndex,
-                pageSize: this.pageSize
+                pageSize: this.pageSize,
+                client:'B'
               }
             };
             this.$api.post('',data,this.getUserSuc,this.getUserErr,this.headers);
@@ -159,7 +162,8 @@
                 bankId: this.user.bankId,
                 duty: this.user.duty,
                 pageIndex: this.pageIndex,
-                pageSize: this.pageSize
+                pageSize: this.pageSize,
+                client:'B'
               }
             };
             this.$api.post('',data,this.getUserSuc,this.getUserErr,this.headers);
@@ -190,7 +194,8 @@
               bankId: this.saveInfo.bankId,
               duty: this.saveInfo.duty,
               pageIndex: this.currentPage,
-              pageSize: this.pageSize
+              pageSize: this.pageSize,
+              client:'B'
             }
           };
           this.$api.post('',current_data,this.getUserSuc,this.getUserErr,this.headers);
@@ -200,7 +205,7 @@
           data.officerList.map((item,k)=>{
             item.dutyName = item.duty == 1 ? "主管" : "客户经理";
           });
-          this.total = parseInt(data.totalNum) != 0 ? parseInt(data.totalNum) : 1;
+          this.total = parseInt(data.totalNum);
           this.tableData = data.officerList;
         },
 
@@ -326,9 +331,9 @@
         // 点击其他不在的区域触发事件
         let _this = this;
         document.addEventListener('click', (e) => {
-          console.log(_this.$el.contains(e.target));
-          if (!_this.$el.contains(e.target)){
-              this.showTree = false;
+          let tree = document.getElementsByClassName('tree')[0];
+          if (tree && !tree.contains(e.target)){
+            _this.showTree = false;
           }
         })
       }
@@ -336,6 +341,13 @@
 </script>
 
 <style lang="stylus" rel="stylesheet/stylus">
+  .el-button{
+    border-radius:0;
+  }
+  .el-input__inner{
+    border-radius:0;
+    color:#606266;
+  }
   .downC{
     position:relative;
     .down{
@@ -343,7 +355,7 @@
       position:absolute;
       cursor:pointer;
       top:0;
-      left:206px;
+      right:5px;
     }
   }
   .custom-tree-node{
@@ -362,6 +374,11 @@
   }
   .el-table .cell{
     text-align: center;
+  }
+  thead{
+    .cell{
+      font-weight:600;
+    }
   }
   .editBtn:hover{
     font-size: 14px;
@@ -414,10 +431,10 @@
         & > label{
           margin: 0 10px;
           font-size: 14px;
+          font-weight:550;
         }
         & > input{
           background: #fff;
-          border-radius: 4px;
           border: 1px solid #dcdfe6;
           box-sizing: border-box;
           color: #606266;
@@ -434,6 +451,7 @@
         & > label{
           margin: 0 10px;
           font-size: 14px;
+          font-weight:550;
         }
         .tree{
           display: inline-block;
@@ -444,6 +462,7 @@
             width: 100%;
             input{
               box-sizing:border-box;
+              color:#606266;
               height:40px;
               line-height:40px;
               width:240px;
@@ -466,13 +485,14 @@
         & > label{
           margin: 0 10px;
           font-size: 14px;
+          font-weight:550;
         }
       }
     }
     .tab{
       min-width: 1000px;
       width: calc(100% - 48px);
-      padding: 10px;
+      padding: 10px 24px;
       .page{
         text-align: center;
         padding: 15px;

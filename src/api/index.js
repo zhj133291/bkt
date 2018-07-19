@@ -1,10 +1,17 @@
 // 配置API接口地址
 var root = '';
-var tag = location.hostname.indexOf('192.168')!==-1 || location.hostname.indexOf('localhost')!==-1;
-root = root + tag ? 'http://192.168.100.27:8081':location.host;
+var rootUrl="";
+var hostName = location.hostname;
+var tag = contain(hostName,'192.168')|| contain(hostName,'localhost')||contain(hostName,'127.0');
+root = root + (tag ? 'http://192.168.100.27:8081':'http://'+location.host);
 root = root + '/gateway/json';
+rootUrl='http://192.168.100.102:8088'; //文件服务
 // 引用axios
 var axios = require('axios')
+// 判断是否包含
+function contain (str,constr) {
+  return str.indexOf(constr)!==-1;
+}
 // 自定义判断元素类型JS
 function toType (obj) {
   return ({}).toString.call(obj).match(/\s([a-zA-Z]+)/)[1].toLowerCase()
@@ -72,5 +79,8 @@ export default {
   },
   delete: function (url, params, success, failure, headers) {
     return apiAxios('DELETE', url, params, success, failure, headers)
+  },
+  getRootUrl:function (){
+  	return rootUrl;
   }
 }

@@ -8,7 +8,7 @@
           <span>人员详情</span>
         </div>
         <div class='form'>
-            <div class="tree"  v-show='showTree' @mouseleave='closeTree'>
+            <div class="tree" v-show='showTree' @mouseleave='closeTree'>
               <el-tree
                 :data="treeData"
                 node-key="id"
@@ -436,7 +436,7 @@
         padding:60px 0 0 127px;
         position:relative;
         .tree{
-          width:240px;
+          min-width:240px;
           box-sizing:border-box;
           border:1px solid #ddd;
           box-shadow: 0px 3px 10px 0px rgba(26, 24, 25, 0.3);
@@ -495,6 +495,9 @@
               width:240px;
               padding:0 16px;
               border: solid 1px rgba(234, 234, 234, 1);
+              &.pointer{
+                color:#606266;
+              }
               &:disabled{
                 background:#fff;
               }

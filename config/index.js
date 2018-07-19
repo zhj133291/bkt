@@ -44,17 +44,17 @@ module.exports = {
 
   build: {
     // Template for index.html
-    index: path.resolve(__dirname, '../dist/index.html'),
+    index: path.resolve(__dirname, '../bank/index.html'),
 
     // Paths
-    assetsRoot: path.resolve(__dirname, '../dist'),
+    assetsRoot: path.resolve(__dirname, '../bank'),
     assetsSubDirectory: 'static',
     assetsPublicPath: '/',
 
     /**
      * Source Maps
      */
-
+	//打包时改为false
     productionSourceMap: true,
     // https://webpack.js.org/configuration/devtool/#production
     devtool: '#source-map',
