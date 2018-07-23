@@ -10,6 +10,10 @@ import creditReport from '@/page/creditReport'
 import creditReviewReport from '@/page/creditReviewReport'
 import customerAccept from '@/page/customerAccept'
 import customerDetail from '@/page/customerDetail'
+import resetPwd from '@/page/resetPwd'
+import pdf from '@/page/PDF'
+import viewer from '@/page/viewer'
+import analysis from "@/page/analysis"
 
 Vue.use(Router)
 
@@ -65,7 +69,25 @@ export default new Router({
           name: 'customerDetail',
           path: '/customerDetail',
           component: customerDetail
-        }
+        },
+        {
+          name: 'resetPwd',
+          path: '/resetPwd',
+          component: resetPwd
+        },
+				{
+					path: '/pdf',
+					name: 'pdf',
+					component: pdf
+				}, {
+					path: '/viewer',
+					name: 'viewer',
+					component: viewer
+				}, {
+					path: '/analysis',
+					name: 'analysis',
+					component: analysis
+				}
       ]
     }
   ]

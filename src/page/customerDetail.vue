@@ -636,7 +636,7 @@
         data.apply.logoPath = this.$utils.imgURL.img + data.apply.logoPath;
         data.apply.proposerType = data.apply.proposerType == 1 ? '法定代表人' : '最大控股自然人',
         this.apply = data.apply;
-        let guarantee = data.productProfile.guarantee.split(',');
+        let guarantee = data.product.guarantee.split(',');
         let str = '';
         let me = this;
         let len = guarantee.length;
@@ -646,9 +646,9 @@
             str += '、';
           }
         });
-        data.productProfile.rate = (data.productProfile.rateFrom||'9') + '%' + (data.productProfile.rateTo ? '~' + data.productProfile.rateTo + '%' : '');
-        data.productProfile.guarantee = str;
-        this.productProfile = data.productProfile;
+        data.product.rate = (data.product.rateFrom||'9') + '%' + (data.product.rateTo ? '~' + data.product.rateTo + '%' : '');
+        data.product.guarantee = str;
+        this.productProfile = data.product;
       },
       getBaseInfoErr(data) {
 

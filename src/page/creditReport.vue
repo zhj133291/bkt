@@ -203,11 +203,11 @@
       </el-row>
 
       <p class="note">备注：</p>
-      <p class="note_content"><strong>成长指数</strong>&nbsp;&nbsp;通过预测未来企业一段时间的销售增长情况，评估企业未来一 段时间的经营状态，放映企业持续成长性，进而评估其偿债能力。（成长指数越高企业成长性越好，其偿债能力越强）
+      <p class="note_content"><strong>成长指数</strong>&nbsp;&nbsp;通过预测未来企业一段时间的销售增长情况，评估企业未来一段时间的经营状态，反映企业持续成长性，进而评估其偿债能力。（成长指数越高企业成长性越好，其偿债能力越强）
       </p>
-      <p class="note_content"><strong>履约指数</strong>&nbsp;&nbsp;通过分析企业历史履约情况，评估企业履约意愿强弱以及未来潜在信用 风险的可能性，从而反映企业未来偿债意愿。（履约指数越高企业偿债意愿也越高）
+      <p class="note_content"><strong>履约指数</strong>&nbsp;&nbsp;通过分析企业历史履约情况，评估企业履约意愿强弱以及未来潜在信用风险的可能性，从而反映企业未来偿债意愿。（履约指数越高企业偿债意愿也越高）
       </p>
-      <p class="note_content"><strong>信用评分</strong>&nbsp;&nbsp;信用评分是由成长指数与履约指数综合而成，用来评估企业未来信用状况， 其评分越高，信用越好；反之，则越差
+      <p class="note_content"><strong>信用评分</strong>&nbsp;&nbsp;信用评分是由成长指数与履约指数综合而成，用来评估企业未来信用状况， 其评分越高，信用越好；反之，则越差。
       </p>
     </div>
     <div class="report_part4">

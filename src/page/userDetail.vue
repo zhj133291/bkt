@@ -76,6 +76,17 @@
                   <el-switch v-model="user.status" :active-value=1 :inactive-value=2></el-switch>
                 </div>
             </div>
+            <div class='form-group'>
+                <div class='label'>
+                    <span>角色</span>
+                </div>
+                <div class="contentRight">
+                		<el-radio-group v-model="user.roleId">
+      					<el-radio-button :key="item.id" :label="item.id" v-for="item in roleList">{{item.title}}</el-radio-button>
+    					</el-radio-group>
+                </div>
+                
+            </div>
             <div class="button">
               <button @click='submit' :disabled='reg' class='sure'>保 存</button>
               <button @click='cancel' class='can'>取 消</button>
@@ -93,6 +104,7 @@
         reg:false,
         showTree:false,
         treeData:[],
+        roleList:[],
         duty:[{
             value: 1,
             label: '主管'
@@ -108,8 +120,9 @@
           status:1,
           bankId:'',
           bankName:'',
-          duty:2,
-          operateType:'1'
+          duty:1,
+          operateType:'1',
+          roleId:1
         },
         tip:{
           name:false,
@@ -270,7 +283,8 @@
             "status":user.status,
             "bankId":user.bankId,
             "duty": user.duty,
-            "operateType":user.operateType
+            "operateType":user.operateType,
+            "roleId":user.roleId
           }
         };
         this.reg = true;
@@ -318,12 +332,72 @@
           duration: 2000
         });
       },
+      //获取用户信息
+      getUserInfo () {
+	    	  let data = {
+	          "service": "officerService",
+	          "method": "getUserInfo",
+	          "data": {
+	            "userId": this.user.userId
+	          }
+	       };
+          this.$api.post('',data,this.getUserInfoSuc,this.getUserInfoErr,this.headers);
+	    },
+	    getUserInfoSuc (data) {
+	    	  console.log(data);
+	    	  this.user.userId = data.userId;
+	    	  this.user.userName = data.userName;
+	    	  this.user.loginName = data.loginName;
+	    	  this.user.duty = data.duty;
+	    	  this.user.status = data.status;
+	    	  this.user.roleId = data.roleId;
+	    	  
+	    	  let me = this;
+	    	  let timer = setInterval(()=>{
+          let userName = document.getElementById('userName');
+          let userPhone = document.getElementById('userPhone');
+          if(userName){
+            userName.value = me.user.userName;
+            userPhone.value = me.user.loginName;
+            clearInterval(timer);
+          }
+        },1);
+	    },
+	    getUserInfoErr (err) {
+	    	  console.log(err);
+	    },
+	    //查询角色信息
+	    getRoleInfo () {
+	      let data = {
+	        "service": "configService",
+	        "method": "getRoleListByClient",
+	        "data": {
+	        	  "role": {
+	          	"client": "B"
+	        	   }
+	        }
+          };
+          this.$api.post('',data,this.getRoleInfoSuc,this.getRoleInfoErr,this.headers);
+	    },
+	    getRoleInfoSuc (data) {
+	    	  this.roleList = data;
+	    	  console.log(this.roleList);
+	    },
+	    getRoleInfoErr (err) {
+	    	  console.log(err);
+	    },
       cancel () {
         this.$router.push({name:'user',params:{back:'back'}});
       }
     },
+    watch:{
+    		'user.roleId':{
+    			handler(newValue,oldValue) {
+	          console.log(newValue);
+	        }
+    		}
+    },
     created () {
-      this.getBankTree();
       let me=this;
       let params = this.$route.query;
       if(!params || !params.userId){
@@ -350,6 +424,9 @@
         this.$nextTick(function(){
           me.$refs.tree.setCurrentKey(params.bankId);
         });
+        this.getBankTree();
+        this.getUserInfo();
+        this.getRoleInfo();
       }
     }
   };
@@ -360,6 +437,37 @@
     @gy: #363f45;
     @height:400px;
     @width:400px;
+    /*角色部分的css*/
+    .el-radio-button, .el-radio-button__inner {
+    	  margin-right: 5px;
+    	  border-radius: 5px !important;
+    }
+    .el-radio-button__inner {
+    		border: 1px solid #dcdfe6 !important;
+    		height: 40px !important;
+    		line-height: 40px !important;
+    		padding: 0px 10px !important;
+    }
+    .el-radio-button__orig-radio {
+    	  width: 10px !important;
+    }
+    .el-radio-button .el-radio-button__inner {
+    		box-shadow: none !important;
+    }
+    .detailContainer .form .form-group .contentRight span {
+    		margin-left: 0 !important;
+    }
+    .is-active {
+    	  background-color: white;
+    	  .el-radio-button__inner {
+    	  	 color: #FFF !important;
+    	  }
+    }
+    
+    
+    
+    
+    
     .el-tree-node{
       color:#363f45 !important;
     }

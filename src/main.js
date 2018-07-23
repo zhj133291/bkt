@@ -6,6 +6,7 @@ import ElementUI from 'element-ui'
 import 'element-ui/lib/theme-chalk/index.css'
 import router from './router'
 import 'babel-polyfill'
+import util from './components/common/index.js'
 
 // 引用API文件
 import api from './api/index.js'
@@ -16,6 +17,7 @@ Vue.prototype.$api = api
 
 // 将工具方法绑定到全局
 Vue.prototype.$utils = utils
+Vue.prototype.$util = util
 
 Vue.config.productionTip = false
 

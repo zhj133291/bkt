@@ -57,6 +57,7 @@
             <el-table-column prop="operate" label="操作">
               <template slot-scope="scope">
                 <el-button class="editBtn" type="text" @click="edit(scope.$index, scope.row)" size="small">编辑</el-button>
+                <el-button class="editBtn" type="text" @click="reset(scope.$index, scope.row)" size="small">重置</el-button>
               </template>
             </el-table-column>
           </el-table>
@@ -117,7 +118,8 @@
             client:'1',
             userId:INFO.userId,
             token:INFO.token
-          }
+          },
+          bankId:""
         };
       },
 
@@ -132,7 +134,7 @@
         }
       },
       methods: {
-        //列表
+        //获取人员列表
         getUserList(obj) {
           if (obj == 'init') {
             let data = {
@@ -225,7 +227,8 @@
           sessionStorage.setItem('total', this.total);
         },
         addUser() {
-          let params = {};
+          let params = {
+          };
           this.save();
           this.$router.push({name:'userDetail',query:params});
         },
@@ -233,16 +236,36 @@
           this.save();
           let params = {
             "userId": row.userId,
-            "userName": row.userName,
-            "loginName": row.loginName,
-            "status": row.status,
+//          "userName": row.userName,
+//          "loginName": row.loginName,
+//          "status": row.status,
             "bankId": row.bankId,
             "bankName": row.bankName,
-            "duty": row.duty,
+//          "duty": row.duty
           };
           this.$router.push({name:'userDetail',query:params});
         },
-
+		//重置
+		reset(index, row) {
+          this.save();
+          let data = {
+              "service": "officerService",
+              "method": "resetUser",
+              "data": {
+              	userId: row.userId
+              }
+            };
+          this.$api.post('',data,this.resetSuc,this.resetErr,this.headers);
+        },
+        resetSuc(data) {
+        		this.open();
+        },
+        resetErr(err) {
+        		console.log(err);
+        },
+        open() {
+          this.$alert('账号已解锁并重置密码为a123456,请尽快修改', '提示', {confirmButtonText: '确定',});
+      	},
         getBankTree () {
           let data= {
             "service": "organizeService",

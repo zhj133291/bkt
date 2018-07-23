@@ -39,7 +39,7 @@ function apiAxios (method, url, params, success, failure, headers) {
   }
   axios({
     method: method,
-    url: url,
+    url: url?url:"/gateway/json",
     data: method === 'POST' || method === 'PUT' ? params : null,
     params: method === 'GET' || method === 'DELETE' ? params : null,
     baseURL: root,
@@ -82,5 +82,8 @@ export default {
   },
   getRootUrl:function (){
   	return rootUrl;
+  },
+  getInterRootUrl:function (){
+  	return root;
   }
 }

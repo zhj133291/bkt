@@ -1,5 +1,5 @@
 <template>
-	<div class="bkt_loginContainer" @keyup.enter='loginClick'>
+	<div class="bkt_loginContainer">
 		<div class="bkt_logoImg"><img src="./bkt_logo.png"/></div>
 		<div class="bkt_title">诚税融银行管理系统</div>
 		<div class="bkt_content">
@@ -8,7 +8,7 @@
 				<div class="bkt_userlogin">登录</div>
 			</div>
 			<div class="bkt_phone">
-				<input type="text" placeholder="请输入手机号码" name="loginName" autocomplete="off" @focus="removeTip" @blur="checkName" @keyup="nameReplace($event)"  maxlength="11" v-model='form.loginName'/>
+				<input type="text" placeholder="请输入手机号码" name="loginName" autocomplete="off" @focus="removeTip" @blur="checkName" @keydown="r($event)" @keyup="nameReplace($event)"  maxlength="11" v-model='form.loginName' onpaste='return false' oncontextmenu="return false" ondrag="return false"/>
 			</div>
 			<div class="bkt_pwd">
 				<input :type="type" placeholder="请输入密码" name="password" autocomplete="off" @focus="removeTip" @keyup="pwdReplace($event)" maxlength="20" v-model='form.passWord'/>
@@ -46,6 +46,18 @@ export default {
 		};
 	},
 	methods: {
+		r ($event) {
+			//先判断浏览器是否为chrome,chrome执行如下操作
+			let code = window.event.code;
+			if(navigator.userAgent.indexOf("Chrome") != -1 && (code == 'Enter' || code == 'NumpadEnter')){
+				let me = this;
+				let timer = setTimeout(()=>{
+					let dom = $event.target;
+					me.replaceAndSetPos(dom,/[^\d]/g,'');
+					me.form.loginName = dom.value;
+				},10);
+			}
+		},
 		checkName () {
 		//	  		输入框失去焦点时调用
 		//	  		this.form.tipShow = false;
@@ -54,8 +66,13 @@ export default {
 		changeType () {
 			this.type = this.type == 'password'?'text':'password';
 		},
-		nameReplace ($event) {
+		nameReplace ($event,me) {
 			let dom = $event.target;
+			if(me){
+				me.replaceAndSetPos(dom,/[^\d]/g,'');
+				me.form.loginName = dom.value;
+				return;
+			}
 			this.replaceAndSetPos(dom,/[^\d]/g,'');
 			this.form.loginName = dom.value;
 		},
