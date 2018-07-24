@@ -1,6 +1,6 @@
 <template>
     <div>
-      <div class="userMain">
+      <div class="bkt_userManager">
         <div class="dh">
           <span class='cancel'>人员管理</span>
         </div>
@@ -228,6 +228,9 @@
         },
         addUser() {
           let params = {
+//        	"userId": row.userId,
+//        	"bankId": row.bankId,
+//          "bankName": row.bankName
           };
           this.save();
           this.$router.push({name:'userDetail',query:params});
@@ -247,25 +250,36 @@
         },
 		//重置
 		reset(index, row) {
-          this.save();
-          let data = {
-              "service": "officerService",
-              "method": "resetUser",
-              "data": {
-              	userId: row.userId
-              }
-            };
-          this.$api.post('',data,this.resetSuc,this.resetErr,this.headers);
+		  this.$confirm('是否确认重置密码并解锁此账号', '提示', {
+	          confirmButtonText: '确定',
+	          cancelButtonText: '取消',
+	          type: 'warning',
+	          center: true
+	        }).then(() => {
+		      this.save();
+	          let data = {
+	              "service": "officerService",
+	              "method": "resetUser",
+	              "data": {
+	              	userId: row.userId
+	              }
+	            };
+	          this.$api.post('',data,this.resetSuc,this.resetErr,this.headers);
+	       }).catch(() => {
+	       });
         },
         resetSuc(data) {
+        		this.$alert('账号已解锁并重置密码为a123456,请尽快修改', '', {
+	          confirmButtonText: '确定',
+	          callback: action => {
+				this.getUserList('init');
+	          }
+	        });
         		this.open();
         },
         resetErr(err) {
         		console.log(err);
         },
-        open() {
-          this.$alert('账号已解锁并重置密码为a123456,请尽快修改', '提示', {confirmButtonText: '确定',});
-      	},
         getBankTree () {
           let data= {
             "service": "organizeService",
@@ -409,7 +423,7 @@
     text-decoration: underline;
   }
 
-  .userMain{
+  .bkt_userManager{
     .dh{
       padding-left:24px;
       width:100%;

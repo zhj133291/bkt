@@ -20,7 +20,7 @@ Vue.prototype.$utils = utils
 Vue.prototype.$util = util
 
 Vue.config.productionTip = false
-
+console.log(123)
 let bus = new Vue()
 Vue.prototype.bus = bus
 

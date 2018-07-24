@@ -1,5 +1,5 @@
 <template>
-  <div class="report">
+  <div class="bkt_report">
     <div class="report_title">
       <span class="first_span">南京辰阔科技有限公司</span>
       <div class="report_time">
@@ -436,7 +436,7 @@
 </script>
 
 <style lang="stylus" rel="stylesheet/stylus">
-	.report {
+	.bkt_report {
 		padding: 20px;
 		.report_title {
 			width: 100%;

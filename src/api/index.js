@@ -5,7 +5,8 @@ var hostName = location.hostname;
 var tag = contain(hostName,'192.168')|| contain(hostName,'localhost')||contain(hostName,'127.0');
 root = root + (tag ? 'http://192.168.100.27:8081':'http://'+location.host);
 root = root + '/gateway/json';
-rootUrl='http://192.168.100.102:8088'; //文件服务
+//rootUrl='http://192.168.100.102:8088'; //文件服务
+rootUrl='http://rongte.chenkuo.com.cn:4422'; //文件服务
 // 引用axios
 var axios = require('axios')
 // 判断是否包含
