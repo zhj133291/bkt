@@ -1,5 +1,5 @@
 <template>
-	<div class="acceptMain">
+	<div class="analysisContainer">
 		<div class="dh">
 			<span class='cancel'>统计分析</span>
 		</div>
@@ -163,13 +163,21 @@
 			getApplyReportSuc(data) {
 				var that = this;
 				data.reportList.map((item, k) => {
-					item.applyTime = item.applyTime ? that.$utils.timeFormat(item.applyTime) : "-";
+					item.applyTime = item.applyTime ? that.$utils.formatDate(item.applyTime,"yyyy-MM-dd") : "-";
+					item.send2BankTime = item.send2BankTime ? that.$utils.formatDate(item.send2BankTime,"yyyy-MM-dd") : "-";
+					item.lastIssueTime = item.lastIssueTime ? that.$utils.formatDate(item.lastIssueTime,"yyyy-MM-dd") : "-";
+					item.acceptTime = item.acceptTime ? that.$utils.formatDate(item.acceptTime,"yyyy-MM-dd") : "-";
+					item.creditReportTime = item.creditReportTime ? that.$utils.formatDate(item.creditReportTime,"yyyy-MM-dd") : "-";
+					item.creditTime = item.creditTime ? that.$utils.formatDate(item.creditTime,"yyyy-MM-dd") : "-";
+					item.firstLoanedTime = item.firstLoanedTime ? that.$utils.formatDate(item.firstLoanedTime,"yyyy-MM-dd") : "-";
+					
+					/*item.applyTime = item.applyTime ? that.$utils.timeFormat(item.applyTime) : "-";
 					item.send2BankTime = item.send2BankTime ? that.$utils.timeFormat(item.send2BankTime) : "-";
 					item.lastIssueTime = item.lastIssueTime ? that.$utils.timeFormat(item.lastIssueTime) : "-";
 					item.acceptTime = item.acceptTime ? that.$utils.timeFormat(item.acceptTime) : "-";
 					item.creditReportTime = item.creditReportTime ? that.$utils.timeFormat(item.creditReportTime) : "-";
 					item.creditTime = item.creditTime ? that.$utils.timeFormat(item.creditTime) : "-";
-					item.firstLoanedTime = item.firstLoanedTime ? that.$utils.timeFormat(item.firstLoanedTime) : "-";
+					item.firstLoanedTime = item.firstLoanedTime ? that.$utils.timeFormat(item.firstLoanedTime) : "-";*/
 
 				});
 				that.tableData = data.reportList;
@@ -266,7 +274,7 @@
 </script>
 
 <style lang="stylus" scoped>
-	.acceptMain {
+	.analysisContainer {
 		.dh {
 			padding-left: 24px;
 			width: 100%;

@@ -1,5 +1,5 @@
 <template>
-    <div class='detailContainer1'>
+    <div class='bkt_branchDetail'>
         <div class="dh">
           <span @click='cancel' class='cancel'>分支管理</span><span>&gt;分支详情</span>
         </div>
@@ -298,7 +298,7 @@
     .red{
       color:red !important;
     }
-    .detailContainer1{
+    .bkt_branchDetail{
       min-width:1048px;
       .dh{
         padding-left:24px;

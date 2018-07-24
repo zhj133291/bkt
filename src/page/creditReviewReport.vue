@@ -1,5 +1,5 @@
 <template>
-  <div class="creditReview">
+  <div class="bkt_creditReview">
     <div class="version">{{content.GLOBAL.REPORTNAME}}{{content.GLOBAL.VERSION}}</div>
     <div class="company">
       <div class="co">{{content.GLOBAL.ENTNAME}}</div>
@@ -1110,7 +1110,7 @@
     border-bottom: 8px solid transparent;
     border-left: 10px solid #555;
   }
-  .creditReview{
+  .bkt_creditReview{
     font-size: 14px;
     margin: 20px;
     .version{

@@ -1,5 +1,5 @@
 <template>
-  <div class="custom-tree-container">
+  <div class="bkt_branchContainer">
     <div class="dh">
       <span class='cancel'>分支管理</span>
     </div>
@@ -137,7 +137,7 @@
   .el-tree-node__expand-icon.expanded{
     transform:rotate(45deg) !important;
   }
-  .custom-tree-container{
+  .bkt_branchContainer{
     min-width:1048px;
     .dh{
       padding-left:24px;

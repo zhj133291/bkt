@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="acceptMain">
+    <div class="bkt_customerContent">
       <div class="dh">
         <span class='cancel'>客户管理</span>
       </div>
@@ -396,9 +396,13 @@
             item.operating = '查看'
             break;
           }
-          item.applyTime = this.$utils.timeFormat(item.applyTime);
+          /*item.applyTime = this.$utils.timeFormat(item.applyTime);
           item.sxTime = this.$utils.timeFormat(item.sxTime);
-          item.sendToBankTime = this.$utils.timeFormat(item.sendToBankTime);
+          item.sendToBankTime = this.$utils.timeFormat(item.sendToBankTime);*/
+          
+          item.applyTime = item.applyTime? this.$utils.formatDate(item.applyTime,"yyyy-MM-dd hh:mm"):"-";
+          item.sxTime =item.sxTime? this.$utils.formatDate(item.sxTime,"yyyy-MM-dd hh:mm"):"-";
+          item.sendToBankTime = item.sendToBankTime? this.$utils.formatDate(item.sendToBankTime,"yyyy-MM-dd hh:mm"):"-";
           item.logoPath = this.$utils.imgURL.img + item.logoPath;
         });
 
@@ -427,7 +431,7 @@
   .duty{
     margin-left:10px;
   }
-  .acceptMain{
+  .bkt_customerContent{
     .dh{
       padding-left:24px;
       width:100%;

@@ -1,5 +1,5 @@
 <template>
-    <div class='detailContainer'>
+    <div class='bkt_userDetail'>
         <div class="dh">
           <span @click='cancel' class='cancel'>人员管理</span><span>&gt;人员详情</span>
         </div>
@@ -424,10 +424,10 @@
         this.$nextTick(function(){
           me.$refs.tree.setCurrentKey(params.bankId);
         });
-        this.getBankTree();
         this.getUserInfo();
-        this.getRoleInfo();
       }
+      this.getBankTree();
+      this.getRoleInfo(); 
     }
   };
 </script>
@@ -454,7 +454,7 @@
     .el-radio-button .el-radio-button__inner {
     		box-shadow: none !important;
     }
-    .detailContainer .form .form-group .contentRight span {
+    .bkt_userDetail .form .form-group .contentRight span {
     		margin-left: 0 !important;
     }
     .is-active {
@@ -497,7 +497,7 @@
     .red{
         color:red !important;
     }
-    .detailContainer{
+    .bkt_userDetail{
       min-width:1048px;
       .dh{
         padding-left:24px;
